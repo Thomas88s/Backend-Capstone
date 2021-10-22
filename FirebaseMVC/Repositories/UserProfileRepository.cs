@@ -34,7 +34,7 @@ namespace StonkMarket.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                                    SELECT Id, Email, FirebaseUserId, DisplayName, FirstName, LastName, CreateDate
+                                    SELECT Id, Email, FirebaseUserId, DisplayName, FirstName, LastName, CreatedDate
                                     FROM UserProfile
                                     WHERE Id = @Id";
 
@@ -72,9 +72,9 @@ namespace StonkMarket.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                                    SELECT Id, Email, FirebaseUserId
+                                    SELECT Id, Email, FirebaseUserId, FirstName, LastName
                                     FROM UserProfile
-                                    WHERE FirebaseUserId = @FirebaseuserId";
+                                    WHERE FirebaseUserId = @FirebaseUserId";
 
                     cmd.Parameters.AddWithValue("@FirebaseUserId", firebaseUserId);
 
@@ -86,6 +86,8 @@ namespace StonkMarket.Repositories
                         userProfile = new UserProfile
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                            LastName = reader.GetString(reader.GetOrdinal("LastName")),
                             Email = reader.GetString(reader.GetOrdinal("Email")),
                             FirebaseUserId = reader.GetString(reader.GetOrdinal("FirebaseUserId")),
                         };
