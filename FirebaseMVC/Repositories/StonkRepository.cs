@@ -9,6 +9,14 @@ namespace StonkMarket.Repositories
 {
     public class StonkRepository : BaseRepository
     {
+     
+        public StonkRepository(IConfiguration config):base(config)
+        {
+           
+        }
+
+       
+        
         public List<Stonk> GetAll()
         {
             using (var conn = Connection)
