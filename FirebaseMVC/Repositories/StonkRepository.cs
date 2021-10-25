@@ -7,17 +7,17 @@ using StonkMarket.Models;
 
 namespace StonkMarket.Repositories
 {
-    public class StonkRepository : BaseRepository
+    public class StonkRepository : BaseRepository, IStonkRepository
     {
-     
-        public StonkRepository(IConfiguration config):base(config)
+
+        public StonkRepository(IConfiguration config) : base(config)
         {
-           
+
         }
 
-       
-        
-        public List<Stonk> GetAll()
+
+
+        public List<Stonk> GetAllStonks()
         {
             using (var conn = Connection)
             {
@@ -27,25 +27,25 @@ namespace StonkMarket.Repositories
                     cmd.CommandText = "SELECT id, Name, Price, Date, OneYear, FiveYear, TenYear FROM Stonk ORDER BY name";
                     var reader = cmd.ExecuteReader();
 
-                    var categories = new List<Stonk>();
+                    var stonks = new List<Stonk>();
 
                     while (reader.Read())
                     {
-                        categories.Add(new Stonk()
+                        stonks.Add(new Stonk()
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Name = reader.GetString(reader.GetOrdinal("Name")),
-                            Price = reader.GetInt32(reader.GetOrdinal("Price")),
+                            Price = reader.GetDecimal(reader.GetOrdinal("Price")),
                             Date = reader.GetDateTime(reader.GetOrdinal("Date")),
-                            OneYear = reader.GetInt32(reader.GetOrdinal("OneYear")),
-                            FiveYear = reader.GetInt32(reader.GetOrdinal("FiveYear")),
-                            TenYear = reader.GetInt32(reader.GetOrdinal("TenYear")),
+                            OneYear = reader.GetDecimal(reader.GetOrdinal("OneYear")),
+                            FiveYear = reader.GetDecimal(reader.GetOrdinal("FiveYear")),
+                            TenYear = reader.GetDecimal(reader.GetOrdinal("TenYear")),
                         });
                     }
 
                     reader.Close();
 
-                    return categories;
+                    return stonks;
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace StonkMarket.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        INSERT INTO Category (Name, Price, Date, OneYear, FiveYear, TenYear)
+                        INSERT INTO Stonk (Name, Price, Date, OneYear, FiveYear, TenYear)
                         OUTPUT INSERTED.ID
                         VALUES (@name, @price, @date, @oneYear, @fiveYear, @tenYear);
                         ";

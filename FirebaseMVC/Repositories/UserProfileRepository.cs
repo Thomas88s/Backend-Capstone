@@ -110,7 +110,7 @@ namespace StonkMarket.Repositories
                                         INSERT INTO
                                         UserProfile (Email, FirebaseUserId, DisplayName, FirstName, LastName, CreatedDate) 
                                         OUTPUT INSERTED.ID
-                                        VALUES(@email, @firebaseUserId, @displayName, @firstName, @lastNmae, @createdDate)";
+                                        VALUES(@email, @firebaseUserId, @displayName, @firstName, @lastName, @createdDate)";
 
                     cmd.Parameters.AddWithValue("@email", userProfile.Email);
                     cmd.Parameters.AddWithValue("@firebaseUserId", userProfile.FirebaseUserId);
