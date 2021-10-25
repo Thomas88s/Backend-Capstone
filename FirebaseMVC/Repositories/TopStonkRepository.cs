@@ -7,40 +7,41 @@ using StonkMarket.Models;
 
 namespace StonkMarket.Repositories
 {
-    public class UserStonkRepository : BaseRepository, IUserStonkRepository
+    public class TopStonkRepository : BaseRepository, ITopStonkRepository
     {
 
-        public UserStonkRepository(IConfiguration config) : base(config)
+        public TopStonkRepository(IConfiguration config) : base(config)
         {
 
         }
 
 
 
-        public List<UserStonk> GetAllUserStonks()
+        public List<TopStonk> GetAllTopStonks()
         {
             using (var conn = Connection)
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT u.id, u.StonkId, u.UserId, up.FirstName, u.TopPerformer, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
-                                        FROM UserStonk AS u 
-                                        LEFT JOIN Stonk AS s ON u.StonkId = s.Id
-                                        LEFT JOIN UserProfile AS up ON u.UserId = up.id
-                                        ORDER BY S.name";
+                    cmd.CommandText = @"SELECT t.id, t.StonkId, t.UserId, up.FirstName, t.PercentageIncrease, t.TopPerformer, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
+                                        FROM TopStonk AS t 
+                                        LEFT JOIN Stonk AS s ON t.StonkId = s.Id
+                                        LEFT JOIN UserProfile AS up ON t.UserId = up.id
+                                        ORDER BY s.name";
                     var reader = cmd.ExecuteReader();
 
-                    var stonks = new List<UserStonk>();
+                    var stonks = new List<TopStonk>();
 
                     while (reader.Read())
                     {
-                        stonks.Add(new UserStonk()
+                        stonks.Add(new TopStonk()
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             StonkId = reader.GetInt32(reader.GetOrdinal("StonkId")),
                             UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
                             TopPerformer = reader.GetBoolean(reader.GetOrdinal("TopPerformer")),
+                            PercentageIncrease = reader.GetInt32(reader.GetOrdinal("PercentageIncrease"))
                         });
                     }
 
@@ -51,7 +52,7 @@ namespace StonkMarket.Repositories
             }
         }
 
-        public UserStonk GetUserStonkById(int id)
+        public TopStonk GetTopStonkById(int id)
         {
             using (var conn = Connection)
             {
@@ -59,28 +60,29 @@ namespace StonkMarket.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                       SELECT u.id, u.StonkId, u.UserId, up.FirstName, u.TopPerformer, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
-                       FROM UserStonk AS u
-                       LEFT JOIN Stonk AS s ON u.StonkId = s.Id
-                       LEFT JOIN UserProfile AS up ON u.UserId = up.id
-                       WHERE UserStonk.id = @id";
+                       SELECT t.id, t.StonkId, t.UserId, up.FirstName, t.TopPerformer, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
+                       FROM TopStonk AS t
+                       LEFT JOIN Stonk AS s ON t.StonkId = s.Id
+                       LEFT JOIN UserProfile AS up ON t.UserId = up.id
+                       WHERE TopStonk.id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
                     var reader = cmd.ExecuteReader();
 
                     if (reader.Read())
                     {
-                        UserStonk userStonk = new UserStonk
+                        TopStonk topStonk = new TopStonk
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             StonkId = reader.GetInt32(reader.GetOrdinal("StonkId")),
                             UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
                             TopPerformer = reader.GetBoolean(reader.GetOrdinal("TopPerformer")),
+                            PercentageIncrease = reader.GetInt32(reader.GetOrdinal("PercentageIncrease"))
                         };
 
 
                         reader.Close();
-                        return userStonk;
+                        return topStonk;
                     }
                     else
                     {
@@ -92,7 +94,7 @@ namespace StonkMarket.Repositories
             }
         }
 
-        public void Add(UserStonk userStonk)
+        public void Add(TopStonk topStonk)
         {
             using (var conn = Connection)
             {
@@ -100,23 +102,24 @@ namespace StonkMarket.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        INSERT INTO UserStonk (StockId, UserId, TopPerformer)
+                        INSERT INTO TopStonk (StockId, UserId, TopPerformer, PercentageIncrease)
                         OUTPUT INSERTED.ID
-                        VALUES (@stockId, @userId, @TopPerformer);
+                        VALUES (@stockId, @userId, @TopPerformer, @PercentageIncrease);
                         ";
 
-                    cmd.Parameters.AddWithValue("@stonkId", userStonk.StonkId);
-                    cmd.Parameters.AddWithValue("@userId", userStonk.UserId);
-                    cmd.Parameters.AddWithValue("@date", userStonk.TopPerformer);
+                    cmd.Parameters.AddWithValue("@stonkId", topStonk.StonkId);
+                    cmd.Parameters.AddWithValue("@userId", topStonk.UserId);
+                    cmd.Parameters.AddWithValue("@topPerformer", topStonk.TopPerformer);
+                    cmd.Parameters.AddWithValue("@percentageIncrease", topStonk.PercentageIncrease);
                     ;
 
                     int id = (int)cmd.ExecuteScalar();
-                    userStonk.Id = id;
+                    topStonk.Id = id;
                 }
             }
         }
 
-        public void Update(UserStonk userStonk)
+        public void Update(TopStonk topStonk)
         {
             using (var conn = Connection)
             {
@@ -125,23 +128,25 @@ namespace StonkMarket.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                            UPDATE UserStonk
+                            UPDATE TopStonk
                             SET 
                                 StonkId = @stonkId
                                 UserID = @userId
                                 TopPerformer = @topPerformer
+                                PercentageIncrease = @percentageIncrease
                             WHERE Id = @id";
 
-                    cmd.Parameters.AddWithValue("@id", userStonk.Id);
-                    cmd.Parameters.AddWithValue("@stonkId", userStonk.StonkId);
-                    cmd.Parameters.AddWithValue("@userId", userStonk.UserId);
-                    cmd.Parameters.AddWithValue("@topPerformer", userStonk.TopPerformer);
+                    cmd.Parameters.AddWithValue("@id", topStonk.Id);
+                    cmd.Parameters.AddWithValue("@stonkId", topStonk.StonkId);
+                    cmd.Parameters.AddWithValue("@userId", topStonk.UserId);
+                    cmd.Parameters.AddWithValue("@topPerformer", topStonk.TopPerformer);
+                    cmd.Parameters.AddWithValue("@percentageIncrease", topStonk.PercentageIncrease);
                     cmd.ExecuteNonQuery();
                 }
             }
         }
 
-        public void Delete(int userStonkId)
+        public void Delete(int topStonkId)
         {
             using (var conn = Connection)
             {
@@ -150,11 +155,11 @@ namespace StonkMarket.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                            DELETE FROM UserStonk
+                            DELETE FROM TopStonk
                             WHERE Id = @id
                         ";
 
-                    cmd.Parameters.AddWithValue("@id", userStonkId);
+                    cmd.Parameters.AddWithValue("@id", topStonkId);
 
                     cmd.ExecuteNonQuery();
                 }

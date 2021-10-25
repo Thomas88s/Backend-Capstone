@@ -1,0 +1,52 @@
+﻿@model IEnumerable<StonkMarket.Models.TopStonk>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Top Stonks</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StonkId)
+            </th>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.PercentageIncrease)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TopPerformer)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StonkId)
+            </td>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.PercentageIncrease)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TopPerformer)
+            </td>
+            <td>
+                @Html.ActionLink("Add to Your List", "Add", new { id=item.Id}) 
+             
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
