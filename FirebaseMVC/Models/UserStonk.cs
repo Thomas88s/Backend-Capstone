@@ -10,6 +10,6 @@ namespace StonkMarket.Models
         public int Id { get; set; }
         public int StonkId { get; set; }
         public int UserId { get; set; }
-        public int TopPerformer { get; set; }
+        public bool TopPerformer { get; set; }
     }
 }
