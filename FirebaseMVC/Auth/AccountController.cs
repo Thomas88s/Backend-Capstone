@@ -79,8 +79,10 @@ namespace StonkMarket.Auth
             {
                 FirstName = registration.FirstName,
                 LastName = registration.LastName,
+                DisplayName = registration.DisplayName,
                 Email = fbUser.Email,
                 FirebaseUserId = fbUser.FirebaseUserId,
+                CreatedDate = System.DateTime.Now
             };
             _userProfileRepository.Add(newUserProfile);
 

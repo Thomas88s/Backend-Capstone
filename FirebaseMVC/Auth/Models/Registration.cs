@@ -15,6 +15,10 @@ namespace StonkMarket.Auth.Models
         public string LastName { get; set; }
 
         [Required]
+        [DisplayName("Username")]
+        public string DisplayName { get; set; }
+
+        [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
