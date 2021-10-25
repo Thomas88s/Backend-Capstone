@@ -28,6 +28,7 @@ namespace StonkMarket
             services.AddTransient<IStonkRepository, StonkRepository>();
             services.AddTransient<IUserStonkRepository, UserStonkRepository>();
             services.AddTransient<ITopStonkRepository, TopStonkRepository>();
+            services.AddTransient<IMessageRepository, MessageRepository>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
