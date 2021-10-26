@@ -14,13 +14,14 @@ namespace StonkMarket.Controllers
     public class StonkController : Controller
     {
         private readonly IStonkRepository _stonkRepository;
+      
 
         // ASP.NET will give us an instance of our Walker Repository. This is called "Dependency Injection"
         public StonkController(IStonkRepository stonkRepository)
         {
             _stonkRepository = stonkRepository;
         }
-
+       
         // GET: StonkController
         public ActionResult Index()
         {
@@ -43,15 +44,16 @@ namespace StonkMarket.Controllers
         // POST: StonkController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Stonk stonk)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _stonkRepository.AddStonk(stonk);
+                return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(stonk);
             }
         }
 

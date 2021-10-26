@@ -1,9 +1,9 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using StonkMarket.Models;
+
+
 
 namespace StonkMarket.Repositories
 {
@@ -92,7 +92,7 @@ namespace StonkMarket.Repositories
             }
         }
 
-        public void Add(Stonk stonk)
+        public void AddStonk(Stonk stonk)
         {
             using (var conn = Connection)
             {

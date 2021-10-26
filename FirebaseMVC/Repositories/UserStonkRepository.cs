@@ -24,7 +24,7 @@ namespace StonkMarket.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT u.id, u.StonkId, u.UserId, up.FirstName, u.TopPerformer, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
+                    cmd.CommandText = @"SELECT u.id, u.StonkId, u.UserId, up.FirstName, up.DisplayName, u.TopPerformer, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
                                         FROM UserStonk AS u 
                                         LEFT JOIN Stonk AS s ON u.StonkId = s.Id
                                         LEFT JOIN UserProfile AS up ON u.UserId = up.id
@@ -41,7 +41,21 @@ namespace StonkMarket.Repositories
                             StonkId = reader.GetInt32(reader.GetOrdinal("StonkId")),
                             UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
                             TopPerformer = reader.GetBoolean(reader.GetOrdinal("TopPerformer")),
-                        });
+                            Stonk = new Stonk()
+                            {
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Price = reader.GetDecimal(reader.GetOrdinal("Price")),
+                                Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                                OneYear = reader.GetDecimal(reader.GetOrdinal("OneYear")),
+                                FiveYear = reader.GetDecimal(reader.GetOrdinal("FiveYear")),
+                                TenYear = reader.GetDecimal(reader.GetOrdinal("TenYear")),
+                            },
+                            UserProfile = new UserProfile()
+                            {
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                            }
+                        }) ;
                     }
 
                     reader.Close();
