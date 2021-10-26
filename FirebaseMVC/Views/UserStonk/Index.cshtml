@@ -16,10 +16,25 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StonkId)
+                @Html.DisplayNameFor(model => model.Stonk.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
+                @Html.DisplayNameFor(model => model.UserProfile.DisplayName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stonk.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stonk.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stonk.OneYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stonk.FiveYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stonk.TenYear)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TopPerformer)
@@ -34,16 +49,31 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StonkId)
+                @Html.DisplayFor(modelItem => item.Stonk.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
+                @Html.DisplayFor(modelItem => item.UserProfile.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stonk.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stonk.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stonk.OneYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stonk.FiveYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stonk.TenYear)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TopPerformer)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
