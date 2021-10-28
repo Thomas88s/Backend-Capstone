@@ -12,16 +12,19 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-          
             <div class="form-group">
-                <label asp-for="StonkId" class="control-label"></label>
-                <input asp-for="StonkId" class="form-control" />
-                <span asp-validation-for="StonkId" class="text-danger"></span>
+                <input asp-for="Id" class="form-control" type="hidden"/>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" />
-                <span asp-validation-for="UserId" class="text-danger"></span>
+                <input asp-for="StonkId" class="form-control" type="hidden"/>
+            </div>
+            <div class="form-group">
+                <input asp-for="UserId" class="form-control" type="hidden"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberOfStonks" class="control-label"></label>
+                <input asp-for="NumberOfStonks" class="form-control" />
+                <span asp-validation-for="NumberOfStonks" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">

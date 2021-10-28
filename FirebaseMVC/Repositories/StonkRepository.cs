@@ -92,6 +92,53 @@ namespace StonkMarket.Repositories
             }
         }
 
+        public List<Stonk> GetStonksByUserStonkId(int userStonkId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                SELECT s.Id, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
+                FROM Stonk AS s
+                JOIN UserStonk AS us ON s.Id = us.StonkId
+                WHERE UserStonk.Id = @userStonkId
+            ";
+
+                    cmd.Parameters.AddWithValue("@userStonkId", userStonkId);
+
+                    var reader = cmd.ExecuteReader();
+
+                    List<Stonk> stonks = new List<Stonk>();
+
+                    while (reader.Read())
+                    {
+                        Stonk stonk = new Stonk()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Price = reader.GetInt32(reader.GetOrdinal("Price")),
+                            Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                            OneYear = reader.GetInt32(reader.GetOrdinal("OneYear")),
+                            FiveYear = reader.GetInt32(reader.GetOrdinal("FiveYear")),
+                            TenYear = reader.GetInt32(reader.GetOrdinal("TenYear")),
+                        };
+
+                     
+
+                        stonks.Add(stonk);
+                    }
+                    reader.Close();
+                    return stonks;
+                }
+            }
+        }
+
+
+
+
         public void AddStonk(Stonk stonk)
         {
             using (var conn = Connection)
@@ -119,7 +166,7 @@ namespace StonkMarket.Repositories
             }
         }
 
-        public void Update(Stonk stonk)
+        public void UpdateStonk(Stonk stonk)
         {
             using (var conn = Connection)
             {
@@ -150,7 +197,7 @@ namespace StonkMarket.Repositories
             }
         }
 
-        public void Delete(int stonkId)
+        public void DeleteStonk(int stonkId)
         {
             using (var conn = Connection)
             {

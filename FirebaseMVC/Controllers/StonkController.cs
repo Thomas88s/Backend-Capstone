@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using StonkMarket.Models;
 using StonkMarket.Repositories;
 
+
 namespace StonkMarket.Controllers
 {
   
@@ -14,12 +15,17 @@ namespace StonkMarket.Controllers
     public class StonkController : Controller
     {
         private readonly IStonkRepository _stonkRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
+
       
 
         // ASP.NET will give us an instance of our Walker Repository. This is called "Dependency Injection"
-        public StonkController(IStonkRepository stonkRepository)
+        public StonkController(
+            IStonkRepository stonkRepository,
+            IUserProfileRepository userProfileRepository)
         {
             _stonkRepository = stonkRepository;
+            _userProfileRepository = userProfileRepository;
         }
        
         // GET: StonkController
@@ -36,7 +42,7 @@ namespace StonkMarket.Controllers
         }
 
         // GET: StonkController/Create
-        public ActionResult Create()
+        public ActionResult CreateStonk()
         {
             return View();
         }
@@ -44,7 +50,7 @@ namespace StonkMarket.Controllers
         // POST: StonkController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Stonk stonk)
+        public ActionResult CreateStonk(Stonk stonk)
         {
             try
             {
@@ -58,7 +64,7 @@ namespace StonkMarket.Controllers
         }
 
         // GET: StonkController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult EditStonk(int id)
         {
             return View();
         }
@@ -66,7 +72,7 @@ namespace StonkMarket.Controllers
         // POST: StonkController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult EditStonk(int id, IFormCollection collection)
         {
             try
             {
@@ -79,7 +85,7 @@ namespace StonkMarket.Controllers
         }
 
         // GET: StonkController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult DeleteStonk(int id)
         {
             return View();
         }
@@ -87,7 +93,7 @@ namespace StonkMarket.Controllers
         // POST: StonkController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult DeleteStonk(int id, IFormCollection collection)
         {
             try
             {
