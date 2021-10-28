@@ -7,8 +7,8 @@ namespace StonkMarket.Repositories
     {
         List<Stonk> GetAllStonks();
         void AddStonk(Stonk stonk);
-        void Delete(int stonkId);
+        void DeleteStonk(int stonkId);
         Stonk GetStonkById(int id);
-        void Update(Stonk stonk);
+        void UpdateStonk(Stonk stonk);
     }
 }

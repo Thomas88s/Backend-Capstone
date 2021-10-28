@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using StonkMarket.Models;
 
@@ -24,7 +25,7 @@ namespace StonkMarket.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT u.id, u.StonkId, u.UserId, up.FirstName, up.DisplayName, u.TopPerformer, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
+                    cmd.CommandText = @"SELECT u.id, u.StonkId, u.UserId, u.NumberOfStonks, up.FirstName, up.id, up.DisplayName, u.TopPerformer, s.id, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
                                         FROM UserStonk AS u 
                                         LEFT JOIN Stonk AS s ON u.StonkId = s.Id
                                         LEFT JOIN UserProfile AS up ON u.UserId = up.id
@@ -40,9 +41,11 @@ namespace StonkMarket.Repositories
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             StonkId = reader.GetInt32(reader.GetOrdinal("StonkId")),
                             UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
+                            NumberOfStonks = reader.GetInt32(reader.GetOrdinal("NumberOfStonks")),
                             TopPerformer = reader.GetBoolean(reader.GetOrdinal("TopPerformer")),
                             Stonk = new Stonk()
                             {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
                                 Name = reader.GetString(reader.GetOrdinal("Name")),
                                 Price = reader.GetDecimal(reader.GetOrdinal("Price")),
                                 Date = reader.GetDateTime(reader.GetOrdinal("Date")),
@@ -52,6 +55,7 @@ namespace StonkMarket.Repositories
                             },
                             UserProfile = new UserProfile()
                             {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
                                 FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
                             }
@@ -73,11 +77,11 @@ namespace StonkMarket.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                       SELECT u.id, u.StonkId, u.UserId, up.FirstName, u.TopPerformer, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
-                       FROM UserStonk AS u
-                       LEFT JOIN Stonk AS s ON u.StonkId = s.Id
-                       LEFT JOIN UserProfile AS up ON u.UserId = up.id
-                       WHERE UserStonk.id = @id";
+                      SELECT u.id, u.StonkId, u.UserId, u.NumberOfStonks, up.FirstName, up.id, up.DisplayName, u.TopPerformer, s.id, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
+                                        FROM UserStonk AS u 
+                                        LEFT JOIN Stonk AS s ON u.StonkId = s.id
+                                        LEFT JOIN UserProfile AS up ON u.UserId = up.id
+                       WHERE u.id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
                     var reader = cmd.ExecuteReader();
@@ -89,7 +93,24 @@ namespace StonkMarket.Repositories
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             StonkId = reader.GetInt32(reader.GetOrdinal("StonkId")),
                             UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
+                            NumberOfStonks = reader.GetInt32(reader.GetOrdinal("NumberOfStonks")),
                             TopPerformer = reader.GetBoolean(reader.GetOrdinal("TopPerformer")),
+                            Stonk = new Stonk()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Price = reader.GetDecimal(reader.GetOrdinal("Price")),
+                                Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                                OneYear = reader.GetDecimal(reader.GetOrdinal("OneYear")),
+                                FiveYear = reader.GetDecimal(reader.GetOrdinal("FiveYear")),
+                                TenYear = reader.GetDecimal(reader.GetOrdinal("TenYear")),
+                            },
+                            UserProfile = new UserProfile()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                            }
                         };
 
 
@@ -106,6 +127,57 @@ namespace StonkMarket.Repositories
             }
         }
 
+        public List<UserStonk> GetTopStonks()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT u.id, u.StonkId, u.UserId, u.NumberOfStonks, up.FirstName, up.id, up.DisplayName, u.TopPerformer, s.id, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
+                                        FROM UserStonk AS u 
+                                        LEFT JOIN Stonk AS s ON u.StonkId = s.Id
+                                        LEFT JOIN UserProfile AS up ON u.UserId = up.id
+                                        Where u.TopPerformer = 'true'";
+                    var reader = cmd.ExecuteReader();
+
+                    var stonks = new List<UserStonk>();
+
+                    while (reader.Read())
+                    {
+                        stonks.Add(new UserStonk()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            StonkId = reader.GetInt32(reader.GetOrdinal("StonkId")),
+                            UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
+                            NumberOfStonks = reader.GetInt32(reader.GetOrdinal("NumberOfStonks")),
+                            TopPerformer = reader.GetBoolean(reader.GetOrdinal("TopPerformer")),
+                            Stonk = new Stonk()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Price = reader.GetDecimal(reader.GetOrdinal("Price")),
+                                Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                                OneYear = reader.GetDecimal(reader.GetOrdinal("OneYear")),
+                                FiveYear = reader.GetDecimal(reader.GetOrdinal("FiveYear")),
+                                TenYear = reader.GetDecimal(reader.GetOrdinal("TenYear")),
+                            },
+                            UserProfile = new UserProfile()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                            }
+                        });
+                    }
+
+                    reader.Close();
+
+                    return stonks;
+                }
+            }
+        }
+
         public void Add(UserStonk userStonk)
         {
             using (var conn = Connection)
@@ -114,13 +186,14 @@ namespace StonkMarket.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        INSERT INTO UserStonk (StockId, UserId, TopPerformer)
+                        INSERT INTO UserStonk (StockId, UserId, NumberOfStonks, TopPerformer)
                         OUTPUT INSERTED.ID
-                        VALUES (@stockId, @userId, @TopPerformer);
+                        VALUES (@stockId, @userId, @PercentageIncrease, @TopPerformer);
                         ";
 
                     cmd.Parameters.AddWithValue("@stonkId", userStonk.StonkId);
                     cmd.Parameters.AddWithValue("@userId", userStonk.UserId);
+                    cmd.Parameters.AddWithValue("@numberOfStonks", userStonk.UserId);
                     cmd.Parameters.AddWithValue("@date", userStonk.TopPerformer);
                     ;
 
@@ -141,14 +214,16 @@ namespace StonkMarket.Repositories
                     cmd.CommandText = @"
                             UPDATE UserStonk
                             SET 
-                                StonkId = @stonkId
-                                UserID = @userId
+                                StonkId = @stonkId,
+                                UserId = @userId,
+                                NumberOfStonks = @numberOfStonks,
                                 TopPerformer = @topPerformer
                             WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@id", userStonk.Id);
                     cmd.Parameters.AddWithValue("@stonkId", userStonk.StonkId);
                     cmd.Parameters.AddWithValue("@userId", userStonk.UserId);
+                    cmd.Parameters.AddWithValue("@numberOfStonks", userStonk.NumberOfStonks);
                     cmd.Parameters.AddWithValue("@topPerformer", userStonk.TopPerformer);
                     cmd.ExecuteNonQuery();
                 }

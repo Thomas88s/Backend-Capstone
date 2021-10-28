@@ -8,6 +8,7 @@ namespace StonkMarket.Repositories
         void Add(UserStonk userStonk);
         void Delete(int userStonkId);
         List<UserStonk> GetAllUserStonks();
+        List<UserStonk> GetTopStonks();
         UserStonk GetUserStonkById(int id);
         void Update(UserStonk userStonk);
     }

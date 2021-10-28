@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<StonkMarket.Models.UserStonk>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "TopIndex";
 }
 
-<h1>Your Stonks</h1>
+<h1>TopIndex</h1>
 
 <p>
-    <a asp-action="Create">Add a Stonk</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -29,18 +29,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Stonk.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Stonk.OneYear)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Stonk.FiveYear)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Stonk.TenYear)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TopPerformer)
             </th>
             <th></th>
         </tr>
@@ -67,21 +55,8 @@
                 @Html.DisplayFor(modelItem => item.Stonk.Date)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Stonk.OneYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Stonk.FiveYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Stonk.TenYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TopPerformer)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
+              
             </td>
         </tr>
 }

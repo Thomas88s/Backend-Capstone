@@ -11,6 +11,7 @@ namespace StonkMarket.Models
         public int StonkId { get; set; }
         public int UserId { get; set; }
         public bool TopPerformer { get; set; }
+        public int NumberOfStonks { get; set;}
         public Stonk Stonk { get; set; }
         public UserProfile UserProfile { get; set; }
     }
