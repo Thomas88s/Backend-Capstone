@@ -54,9 +54,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Stonk.Date)
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
-              
+            <td class="form-group">
+                <input type="submit" value="Add To Your List" class="btn btn-primary" />
             </td>
         </tr>
 }

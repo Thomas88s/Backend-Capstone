@@ -14,5 +14,8 @@ namespace StonkMarket.Models
         public decimal OneYear { get; set; }
         public decimal FiveYear { get; set; }
         public decimal TenYear { get; set; }
+        public UserStonk UserStonk { get; set; }
+        public UserProfile userProfile { get; set; }
+      
     }
 }

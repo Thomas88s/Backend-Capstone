@@ -12,18 +12,23 @@ namespace StonkMarket.Controllers
 {
     public class MessageController : Controller
     {
+       
         private readonly IMessageRepository _messageRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
 
         // ASP.NET will give us an instance of our Walker Repository. This is called "Dependency Injection"
-        public MessageController(IMessageRepository messageRepository)
+        public MessageController(IMessageRepository messageRepository,
+             IUserProfileRepository userProfileRepository)
         {
             _messageRepository = messageRepository;
+            _userProfileRepository = userProfileRepository;
         }
 
         // GET: MessageController
         public ActionResult Index()
         {
-            return View();
+            List<Message> messages = _messageRepository.GetAllMessages();
+            return View(messages);
         }
 
         // GET: MessageController/Details/5

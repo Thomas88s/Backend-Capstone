@@ -118,15 +118,16 @@ namespace StonkMarket.Controllers
         // POST: UserStonkController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, UserStonk userStonk)
         {
             try
             {
+                _userStonkRepository.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(userStonk);
             }
         }
     }

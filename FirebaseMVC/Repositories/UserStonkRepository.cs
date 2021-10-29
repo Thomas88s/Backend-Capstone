@@ -53,12 +53,7 @@ namespace StonkMarket.Repositories
                                 FiveYear = reader.GetDecimal(reader.GetOrdinal("FiveYear")),
                                 TenYear = reader.GetDecimal(reader.GetOrdinal("TenYear")),
                             },
-                            UserProfile = new UserProfile()
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
-                            }
+                           
                         }) ;
                     }
 
@@ -105,12 +100,7 @@ namespace StonkMarket.Repositories
                                 FiveYear = reader.GetDecimal(reader.GetOrdinal("FiveYear")),
                                 TenYear = reader.GetDecimal(reader.GetOrdinal("TenYear")),
                             },
-                            UserProfile = new UserProfile()
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
-                            }
+                           
                         };
 
 

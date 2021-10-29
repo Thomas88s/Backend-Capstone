@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using StonkMarket.Models;
 using StonkMarket.Repositories;
-
+using System.Security.Claims;
 
 namespace StonkMarket.Controllers
 {
@@ -16,16 +16,19 @@ namespace StonkMarket.Controllers
     {
         private readonly IStonkRepository _stonkRepository;
         private readonly IUserProfileRepository _userProfileRepository;
+        private readonly IUserStonkRepository _userStonkRepository;
 
-      
+
 
         // ASP.NET will give us an instance of our Walker Repository. This is called "Dependency Injection"
         public StonkController(
             IStonkRepository stonkRepository,
-            IUserProfileRepository userProfileRepository)
+            IUserProfileRepository userProfileRepository,
+            IUserStonkRepository userStonkRepository)
         {
             _stonkRepository = stonkRepository;
             _userProfileRepository = userProfileRepository;
+            _userStonkRepository = userStonkRepository;
         }
        
         // GET: StonkController
@@ -41,27 +44,27 @@ namespace StonkMarket.Controllers
             return View();
         }
 
-        // GET: StonkController/Create
-        public ActionResult CreateStonk()
-        {
-            return View();
-        }
+        //// GET: StonkController/Create
+        //public ActionResult CreateStonk()
+        //{
+        //    return View();
+        //}
 
-        // POST: StonkController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateStonk(Stonk stonk)
-        {
-            try
-            {
-                _stonkRepository.AddStonk(stonk);
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                return View(stonk);
-            }
-        }
+        //// POST: StonkController/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult CreateStonk(Stonk stonk)
+        //{
+        //    try
+        //    {
+        //        _stonkRepository.AddStonk(stonk);
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return View(stonk);
+        //    }
+        //}
 
         // GET: StonkController/Edit/5
         public ActionResult EditStonk(int id)
@@ -104,5 +107,26 @@ namespace StonkMarket.Controllers
                 return View();
             }
         }
+
+        public ActionResult AddStonk(int id)
+        {
+            try
+            {
+                int userId = GetCurrentUserId();
+                _stonkRepository.AddStonkToUserStonk(id, userId);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        private int GetCurrentUserId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
+        }
+
     }
 }
