@@ -61,7 +61,7 @@
                 @Html.DisplayFor(modelItem => item.TenYear)
             </td>
             <td class="form-group">
-                <input type="submit" value="Add To Your List" class="btn btn-primary" />
+                @Html.ActionLink("Add to My List", "AddStonk", new { id = item.Id }, new { @class = "btn" }) |
             </td>
         </tr>
 }

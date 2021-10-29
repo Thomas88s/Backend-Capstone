@@ -14,8 +14,8 @@ namespace StonkMarket.Repositories
         {
 
         }
-
-
+        
+      
 
         public List<Stonk> GetAllStonks()
         {
@@ -139,7 +139,7 @@ namespace StonkMarket.Repositories
 
 
 
-        public void AddStonk(Stonk stonk)
+        public void AddStonkToUserStonk(int stonkId, int userId)
         {
             using (var conn = Connection)
             {
@@ -147,55 +147,19 @@ namespace StonkMarket.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        INSERT INTO Stonk (Name, Price, Date, OneYear, FiveYear, TenYear)
-                        OUTPUT INSERTED.ID
-                        VALUES (@name, @price, @date, @oneYear, @fiveYear, @tenYear);
-                        ";
+                                        INSERT INTO UserStonk (UserId, StonkId, NumberOfStonks, TopPerformer)
+                                        OUTPUT INSERTED.ID
+                                        VALUES (@userid, @stonkId, 1, 0)
+                                        ";
+                    cmd.Parameters.AddWithValue("@userid", userId);
+                    cmd.Parameters.AddWithValue("@stonkid", stonkId);
+                    
 
-                    cmd.Parameters.AddWithValue("@name", stonk.Name);
-                    cmd.Parameters.AddWithValue("@price", stonk.Price);
-                    cmd.Parameters.AddWithValue("@date", stonk.Date);
-                    cmd.Parameters.AddWithValue("@oneYear", stonk.OneYear);
-                    cmd.Parameters.AddWithValue("@fiveYear", stonk.FiveYear);
-                    cmd.Parameters.AddWithValue("@tenYear", stonk.TenYear);
-                    ;
-
-                    int id = (int)cmd.ExecuteScalar();
-                    stonk.Id = id;
-                }
-            }
-        }
-
-        public void UpdateStonk(Stonk stonk)
-        {
-            using (var conn = Connection)
-            {
-                conn.Open();
-
-                using (var cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"
-                            UPDATE Stonk
-                            SET 
-                                [Name] = @name
-                                Price = @price
-                                Date = @date
-                                OneYear = @oneYear
-                                FiveYear = @fiveYear
-                                TenYear = @tenYear
-                            WHERE Id = @id";
-
-                    cmd.Parameters.AddWithValue("@name", stonk.Name);
-                    cmd.Parameters.AddWithValue("@id", stonk.Id);
-                    cmd.Parameters.AddWithValue("@price", stonk.Price);
-                    cmd.Parameters.AddWithValue("@date", stonk.Date);
-                    cmd.Parameters.AddWithValue("@oneYear", stonk.OneYear);
-                    cmd.Parameters.AddWithValue("@fiveYear", stonk.FiveYear);
-                    cmd.Parameters.AddWithValue("@tenYear", stonk.TenYear);
                     cmd.ExecuteNonQuery();
                 }
             }
         }
+
 
         public void DeleteStonk(int stonkId)
         {
