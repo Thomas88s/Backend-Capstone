@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StonkMarket.Models;
+using StonkMarket.Models.ViewModels;
 using StonkMarket.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace StonkMarket.Controllers
@@ -32,7 +34,21 @@ namespace StonkMarket.Controllers
         // GET: UserStonkController
         public ActionResult Index()
         {
-            List<UserStonk> userStonks = _userStonkRepository.GetAllUserStonks();
+            var userProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userProfile = _userProfileRepository.GetById(userProfileId);
+
+            List<UserStonk> userStonks = _userStonkRepository.GetAllUserStonksById(userProfileId);
+            List<Stonk> stonks = _stonkRepository.GetAllStonks();
+            
+
+
+            UserStonksViewModel vm = new UserStonksViewModel()
+            {
+                UserProfile = userProfile,
+                UserStonk = userStonks,
+                Stonks = stonks
+            };
+
             return View(userStonks);
         }
 
@@ -129,6 +145,11 @@ namespace StonkMarket.Controllers
             {
                 return View(userStonk);
             }
+        }
+        private int GetCurrentUserId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
         }
     }
 }

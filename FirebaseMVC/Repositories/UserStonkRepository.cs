@@ -53,8 +53,66 @@ namespace StonkMarket.Repositories
                                 FiveYear = reader.GetDecimal(reader.GetOrdinal("FiveYear")),
                                 TenYear = reader.GetDecimal(reader.GetOrdinal("TenYear")),
                             },
-                           
+                            UserProfile = new UserProfile()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                            }
                         }) ;
+                    }
+
+                    reader.Close();
+
+                    return stonks;
+                }
+            }
+        }
+
+        public List<UserStonk> GetAllUserStonksById(int userProfileId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT u.id, u.StonkId, u.UserId, u.NumberOfStonks, up.FirstName, up.id, up.DisplayName, u.TopPerformer, s.id, s.Name, s.Price, s.Date, s.OneYear, s.FiveYear, s.TenYear
+                                        FROM UserStonk AS u 
+                                        LEFT JOIN Stonk AS s ON u.StonkId = s.Id
+                                        LEFT JOIN UserProfile AS up ON u.UserId = up.id
+                                        WHERE u.UserId = @UserProfileId";
+
+                    cmd.Parameters.AddWithValue("@UserProfileId", userProfileId);
+                    var reader = cmd.ExecuteReader();
+
+                    var stonks = new List<UserStonk>();
+
+                    while (reader.Read())
+                    {
+                        stonks.Add(new UserStonk()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            StonkId = reader.GetInt32(reader.GetOrdinal("StonkId")),
+                            UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
+                            NumberOfStonks = reader.GetInt32(reader.GetOrdinal("NumberOfStonks")),
+                            TopPerformer = reader.GetBoolean(reader.GetOrdinal("TopPerformer")),
+                            Stonk = new Stonk()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Price = reader.GetDecimal(reader.GetOrdinal("Price")),
+                                Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                                OneYear = reader.GetDecimal(reader.GetOrdinal("OneYear")),
+                                FiveYear = reader.GetDecimal(reader.GetOrdinal("FiveYear")),
+                                TenYear = reader.GetDecimal(reader.GetOrdinal("TenYear")),
+                            },
+                            UserProfile = new UserProfile()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                            }
+                        });
                     }
 
                     reader.Close();
@@ -100,7 +158,12 @@ namespace StonkMarket.Repositories
                                 FiveYear = reader.GetDecimal(reader.GetOrdinal("FiveYear")),
                                 TenYear = reader.GetDecimal(reader.GetOrdinal("TenYear")),
                             },
-                           
+                            UserProfile = new UserProfile()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                            }
                         };
 
 

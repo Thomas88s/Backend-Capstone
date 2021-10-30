@@ -10,6 +10,7 @@ namespace StonkMarket.Repositories
         List<UserStonk> GetAllUserStonks();
         List<UserStonk> GetTopStonks();
         UserStonk GetUserStonkById(int id);
+        List<UserStonk> GetAllUserStonksById(int userProfileId);
         void Update(UserStonk userStonk);
     }
 }
