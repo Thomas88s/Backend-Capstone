@@ -12,14 +12,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+        
             <th>
                 @Html.DisplayNameFor(model => model.Stonk.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumberOfStonks)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.UserProfile.DisplayName)
@@ -36,14 +31,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
+         
             <td>
                 @Html.DisplayFor(modelItem => item.Stonk.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfStonks)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UserProfile.DisplayName)
@@ -55,7 +45,7 @@
                 @Html.DisplayFor(modelItem => item.Stonk.Date)
             </td>
             <td class="form-group">
-                <input type="submit" value="Add To Your List" class="btn btn-primary" />
+                @Html.ActionLink("Add to My List", "AddTopStonk", new { id = item.StonkId }, new { @class = "btn" })
             </td>
         </tr>
 }

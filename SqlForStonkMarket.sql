@@ -34,7 +34,8 @@ CREATE TABLE [Stonk] (
   [Date] datetime NOT NULL,
   [OneYear] decimal,
   [FiveYear] decimal,
-  [TenYear] decimal
+  [TenYear] decimal,
+  [TopPerformer] bit NOT NULL DEFAULT (0)
 )
 GO
 
