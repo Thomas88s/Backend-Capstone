@@ -80,6 +80,7 @@ namespace StonkMarket.Repositories
                                         FROM UserStonk AS u 
                                         LEFT JOIN Stonk AS s ON u.StonkId = s.Id
                                         LEFT JOIN UserProfile AS up ON u.UserId = up.id
+                                        
                                         WHERE u.UserId = @UserProfileId";
 
                     cmd.Parameters.AddWithValue("@UserProfileId", userProfileId);
@@ -231,30 +232,30 @@ namespace StonkMarket.Repositories
             }
         }
 
-        public void Add(UserStonk userStonk)
-        {
-            using (var conn = Connection)
-            {
-                conn.Open();
-                using (var cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"
-                        INSERT INTO UserStonk (StockId, UserId, NumberOfStonks, TopPerformer)
-                        OUTPUT INSERTED.ID
-                        VALUES (@stockId, @userId, @PercentageIncrease, @TopPerformer);
-                        ";
+        //public void Add(UserStonk userStonk)
+        //{
+        //    using (var conn = Connection)
+        //    {
+        //        conn.Open();
+        //        using (var cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = @"
+        //                INSERT INTO UserStonk (StockId, UserId, NumberOfStonks, TopPerformer)
+        //                OUTPUT INSERTED.ID
+        //                VALUES (@stockId, @userId, @PercentageIncrease, @TopPerformer);
+        //                ";
 
-                    cmd.Parameters.AddWithValue("@stonkId", userStonk.StonkId);
-                    cmd.Parameters.AddWithValue("@userId", userStonk.UserId);
-                    cmd.Parameters.AddWithValue("@numberOfStonks", userStonk.UserId);
-                    cmd.Parameters.AddWithValue("@date", userStonk.TopPerformer);
-                    ;
+        //            cmd.Parameters.AddWithValue("@stonkId", userStonk.StonkId);
+        //            cmd.Parameters.AddWithValue("@userId", userStonk.UserId);
+        //            cmd.Parameters.AddWithValue("@numberOfStonks", userStonk.UserId);
+        //            cmd.Parameters.AddWithValue("@date", userStonk.TopPerformer);
+        //            ;
 
-                    int id = (int)cmd.ExecuteScalar();
-                    userStonk.Id = id;
-                }
-            }
-        }
+        //            int id = (int)cmd.ExecuteScalar();
+        //            userStonk.Id = id;
+        //        }
+        //    }
+        //}
 
         public void Update(UserStonk userStonk)
         {
@@ -297,6 +298,28 @@ namespace StonkMarket.Repositories
                         ";
 
                     cmd.Parameters.AddWithValue("@id", userStonkId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void AddTopStonkToUserStonk(int stonkId, int userId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                        INSERT INTO UserStonk (UserId, StonkId, NumberOfStonks, TopPerformer)
+                                        OUTPUT INSERTED.ID
+                                        VALUES (@userid, @stonkId, 1, 1)
+                                        ";
+                   
+                     cmd.Parameters.AddWithValue("@userid", userId);
+                     cmd.Parameters.AddWithValue("@stonkId", stonkId);
+
 
                     cmd.ExecuteNonQuery();
                 }

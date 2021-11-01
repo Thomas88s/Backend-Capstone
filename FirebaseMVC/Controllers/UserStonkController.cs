@@ -82,7 +82,7 @@ namespace StonkMarket.Controllers
         {
             try
             {
-                _userStonkRepository.Add(userStonk);
+                //_userStonkRepository.Add(userStonk);
                 return RedirectToAction(nameof(Index));
             }
             catch(Exception ex)
@@ -146,6 +146,20 @@ namespace StonkMarket.Controllers
                 return View(userStonk);
             }
         }
+        public ActionResult AddTopStonk(int id)
+        {
+            try
+            {
+                int userId = GetCurrentUserId();
+                _userStonkRepository.AddTopStonkToUserStonk(id, userId);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         private int GetCurrentUserId()
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);

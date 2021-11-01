@@ -12,9 +12,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
+             
                 <th>
                     @Html.DisplayNameFor(model => model.Stonk.Name)
                 </th>
@@ -53,9 +51,7 @@
                 
                 
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
+                     
                         <td>
                             @Html.DisplayFor(modelItem => item.Stonk.Name)
                         </td>
@@ -84,8 +80,8 @@
                             @Html.DisplayFor(modelItem => item.TopPerformer)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                            @Html.ActionLink("Update", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Remove", "Delete", new { id = item.Id })
                         </td>
                     </tr>
                 

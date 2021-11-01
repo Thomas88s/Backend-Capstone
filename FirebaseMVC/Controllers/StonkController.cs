@@ -107,7 +107,7 @@ namespace StonkMarket.Controllers
                 return View();
             }
         }
-
+       
         public ActionResult AddStonk(int id)
         {
             try
