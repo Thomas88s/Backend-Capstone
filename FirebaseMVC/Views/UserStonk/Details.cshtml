@@ -1,0 +1,50 @@
+﻿@model StonkMarket.Models.UserStonk
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>UserStonk</h4>
+    <hr />
+    <dl class="row">
+
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TopPerformer)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TopPerformer)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfStonks)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfStonks)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Stonk.OneYear)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Stonk.OneYear)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Stonk.FiveYear)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Stonk.FiveYear)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Stonk.TenYear)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Stonk.TenYear)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    <a asp-action="Index">Back to List</a>
+</div>

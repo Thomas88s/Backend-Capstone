@@ -39,7 +39,8 @@ namespace StonkMarket.Controllers
 
             List<UserStonk> userStonks = _userStonkRepository.GetAllUserStonksById(userProfileId);
             List<Stonk> stonks = _stonkRepository.GetAllStonks();
-            
+            List<UserStonk> noDupes = userStonks.Distinct().ToList();
+           
 
 
             UserStonksViewModel vm = new UserStonksViewModel()
@@ -49,23 +50,30 @@ namespace StonkMarket.Controllers
                 Stonks = stonks
             };
 
-            return View(userStonks);
+            return View(noDupes);
         }
 
         // GET: UserStonkController/TopIndex
         public ActionResult TopIndex()
         {
             List<UserStonk> topStonks = _userStonkRepository.GetTopStonks();
-            return View(topStonks);
+            List<UserStonk> noDupes = topStonks.Distinct().ToList();
+
+            return View(noDupes);
         }
 
         // GET: UserStonkController/Details/5
         public ActionResult Details(int id)
         {
-          
 
-          
-            return View();
+            UserStonk userStonk = _userStonkRepository.GetUserStonkById(id);
+
+            if (userStonk == null)
+            {
+                return NotFound();
+            }
+
+            return View(userStonk);
         }
 
         // GET: UserStonkController/Create
