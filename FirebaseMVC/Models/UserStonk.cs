@@ -14,6 +14,7 @@ namespace StonkMarket.Models
         public int NumberOfStonks { get; set;}
         public Stonk Stonk { get; set; }
         public UserProfile UserProfile { get; set; }
-        public static class ClaimTypes { }  
+        public static class ClaimTypes { }
+        
     }
 }
