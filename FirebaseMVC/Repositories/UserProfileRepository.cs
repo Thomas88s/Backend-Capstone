@@ -26,6 +26,40 @@ namespace StonkMarket.Repositories
             }
         }
 
+        public List<UserProfile> GetAllUserProfiles()
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT Id, [FirstName], DisplayName
+                        FROM UserProfile
+                    ";
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        List<UserProfile> userProfiles = new List<UserProfile>();
+                        while (reader.Read())
+                        {
+                            UserProfile userProfile = new UserProfile
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName")),
+                               
+                            };
+
+                            userProfiles.Add(userProfile);
+                        }
+
+                        return userProfiles;
+                    }
+                }
+            }
+        }
+
         public UserProfile GetById(int id)
         {
             using (SqlConnection conn = Connection)

@@ -41,32 +41,19 @@ namespace StonkMarket.Controllers
         // GET: StonkController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            Stonk stonk = _stonkRepository.GetStonkById(id);
+
+            if (stonk == null)
+            {
+                return NotFound();
+            }
+
+            return View(stonk);
         }
 
-        //// GET: StonkController/Create
-        //public ActionResult CreateStonk()
-        //{
-        //    return View();
-        //}
+       
 
-        //// POST: StonkController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult CreateStonk(Stonk stonk)
-        //{
-        //    try
-        //    {
-        //        _stonkRepository.AddStonk(stonk);
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return View(stonk);
-        //    }
-        //}
-
-        // GET: StonkController/Edit/5
+       
         public ActionResult EditStonk(int id)
         {
             return View();

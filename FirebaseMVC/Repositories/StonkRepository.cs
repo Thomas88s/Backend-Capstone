@@ -71,11 +71,11 @@ namespace StonkMarket.Repositories
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Name = reader.GetString(reader.GetOrdinal("Name")),
-                            Price = reader.GetInt32(reader.GetOrdinal("Price")),
+                            Price = reader.GetDecimal(reader.GetOrdinal("Price")),
                             Date = reader.GetDateTime(reader.GetOrdinal("Date")),
-                            OneYear = reader.GetInt32(reader.GetOrdinal("OneYear")),
-                            FiveYear = reader.GetInt32(reader.GetOrdinal("FiveYear")),
-                            TenYear = reader.GetInt32(reader.GetOrdinal("TenYear")),
+                            OneYear = reader.GetDecimal(reader.GetOrdinal("OneYear")),
+                            FiveYear = reader.GetDecimal(reader.GetOrdinal("FiveYear")),
+                            TenYear = reader.GetDecimal(reader.GetOrdinal("TenYear")),
                         };
 
 

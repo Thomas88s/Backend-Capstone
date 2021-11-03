@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using StonkMarket.Models;
 using StonkMarket.Models.ViewModels;
@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
+
 
 namespace StonkMarket.Controllers
 {
@@ -39,27 +39,21 @@ namespace StonkMarket.Controllers
 
             List<UserStonk> userStonks = _userStonkRepository.GetAllUserStonksById(userProfileId);
             List<Stonk> stonks = _stonkRepository.GetAllStonks();
-            List<UserStonk> noDupes = userStonks.Distinct().ToList();
-           
+          
+            var stonksList = userStonks.GroupBy(x => x.StonkId).Select(x => x.First()).ToList();
 
 
-            UserStonksViewModel vm = new UserStonksViewModel()
-            {
-                UserProfile = userProfile,
-                UserStonk = userStonks,
-                Stonks = stonks
-            };
 
-            return View(noDupes);
+            return View(stonksList);
         }
 
         // GET: UserStonkController/TopIndex
         public ActionResult TopIndex()
         {
             List<UserStonk> topStonks = _userStonkRepository.GetTopStonks();
-            List<UserStonk> noDupes = topStonks.Distinct().ToList();
+            var stonksList = topStonks.GroupBy(x => x.StonkId).Select(x => x.First()).ToList();
 
-            return View(noDupes);
+            return View(stonksList);
         }
 
         // GET: UserStonkController/Details/5
@@ -74,6 +68,20 @@ namespace StonkMarket.Controllers
             }
 
             return View(userStonk);
+        }
+
+        // GET: UserStonkController/TopDetails/5
+        public ActionResult TopDetails(int id)
+        {
+
+            Stonk stonk = _stonkRepository.GetStonkById(id);
+
+            if (stonk == null)
+            {
+                return NotFound();
+            }
+
+            return View(stonk);
         }
 
         // GET: UserStonkController/Create

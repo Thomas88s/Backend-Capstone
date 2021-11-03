@@ -4,10 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h4>@Html.DisplayFor(model => model.Stonk.Name)</h4>
 
 <div>
-    <h4>UserStonk</h4>
+   
     <hr />
     <dl class="row">
 
@@ -25,22 +25,43 @@
             @Html.DisplayFor(model => model.NumberOfStonks)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Stonk.OneYear)
+            @Html.DisplayNameFor(model => model.Stonk.Price)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Stonk.OneYear)
+            @Html.DisplayFor(model => model.Stonk.FlutterPrice)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Stonk.OneYear)
+        </dt>
+        @{ var totalOnePrice = Model.Stonk.OneYear * Model.NumberOfStonks; }
+        <dd class="col-sm-10">
+            <p>
+                @Math.Round(totalOnePrice, 2)
+            </p>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Stonk.FiveYear)
         </dt>
+        @{ var totalFivePrice = Model.Stonk.FiveYear * Model.NumberOfStonks; }
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Stonk.FiveYear)
+            <p>
+                @Math.Round(totalFivePrice, 2)
+            </p>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Stonk.TenYear)
         </dt>
+        @{ var totalTenPrice = Model.Stonk.TenYear * Model.NumberOfStonks; }
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Stonk.TenYear)
+            <p>
+                @Math.Round(totalTenPrice, 2)
+            </p>
         </dd>
     </dl>
 </div>

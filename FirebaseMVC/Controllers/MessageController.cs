@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StonkMarket.Models;
+using StonkMarket.Models.ViewModels;
 using StonkMarket.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
+
 
 
 namespace StonkMarket.Controllers
@@ -28,20 +27,36 @@ namespace StonkMarket.Controllers
         // GET: MessageController
         public ActionResult Index()
         {
-            List<Message> messages = _messageRepository.GetAllMessages();
+            List<UserProfile> userProfiles = _userProfileRepository.GetAllUserProfiles();
+            var userProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            List<Message> messages = _messageRepository.GetAllMessagesByUserId(userProfileId);
             return View(messages);
         }
 
         // GET: MessageController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details()
         {
-            return View();
+            var userProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            List<Message> messages = _messageRepository.GetAllMessagesByUserId(userProfileId);
+         
+            return View(messages);
         }
 
         // GET: MessageController/Create
-        public ActionResult Create()
+        public ActionResult Create(Message message)
         {
-            return View();
+            var userProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            List<UserProfile> userProfiles = _userProfileRepository.GetAllUserProfiles();
+            
+            
+            MessageViewModel vm = new MessageViewModel()
+            {
+                Message = new Message(),
+                UserProfiles = userProfiles,
+             
+            };
+
+            return View(vm);
         }
 
         // POST: MessageController/Create

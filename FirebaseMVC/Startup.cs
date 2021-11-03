@@ -26,8 +26,7 @@ namespace StonkMarket
             services.AddTransient<IFirebaseAuthService, FirebaseAuthService>();
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             services.AddTransient<IStonkRepository, StonkRepository>();
-            services.AddTransient<IUserStonkRepository, UserStonkRepository>();
-            
+            services.AddTransient<IUserStonkRepository, UserStonkRepository>();            
             services.AddTransient<IMessageRepository, MessageRepository>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();

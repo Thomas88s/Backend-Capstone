@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿
 namespace StonkMarket.Models
 {
     public class UserStonk
@@ -15,6 +11,13 @@ namespace StonkMarket.Models
         public Stonk Stonk { get; set; }
         public UserProfile UserProfile { get; set; }
         public static class ClaimTypes { }
+        public decimal TotalPrice { get { return calculatedTotal(NumberOfStonks, Stonk.Price); } set { } }
+
+        decimal calculatedTotal(int NumberOfStonks, decimal Price)
+        {
+            var total = NumberOfStonks * Price;
+            return total;
+        }
         
     }
 }

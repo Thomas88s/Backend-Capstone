@@ -6,13 +6,11 @@
 
 <h1>TopIndex</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
-        
+
             <th>
                 @Html.DisplayNameFor(model => model.Stonk.Name)
             </th>
@@ -29,26 +27,32 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-    
-        <tr>
-         
-            <td>
-                @Html.DisplayFor(modelItem => item.Stonk.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserProfile.DisplayName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Stonk.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Stonk.Date)
-            </td>
-            <td class="form-group">
-                @Html.ActionLink("Add to My List", "AddTopStonk", new { id = item.StonkId }, new { @class = "btn" })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stonk.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserProfile.DisplayName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stonk.FlutterPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stonk.Date)
+                </td>
+                <td class="form-group">
+                    @Html.ActionLink("Details", "TopDetails", new { id = item.StonkId }) |
+                    @Html.ActionLink("Add to My List", "AddTopStonk", new { id = item.StonkId }, new { @class = "btn" })
+                </td>
+               
+       
+       
+               
+            </tr>
+        }
     </tbody>
 </table>

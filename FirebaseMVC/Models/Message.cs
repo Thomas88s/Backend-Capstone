@@ -13,6 +13,6 @@ namespace StonkMarket.Models
         public int SenderId { get; set; }
         public int ReceiverId { get; set; }
         public DateTime CreatedDate { get; set; }
-        public UserProfile UserProfile { get; }
+        public UserProfile UserProfile { get; set; }
     }
 }
