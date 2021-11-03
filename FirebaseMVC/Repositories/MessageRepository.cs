@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using StonkMarket.Models;
 
@@ -25,8 +22,8 @@ namespace StonkMarket.Repositories
                 {
                     cmd.CommandText = @"SELECT m.id, m.Content, m.Date, m.SenderId, m.ReceiverId, m.CreatedDate 
                                         FROM Message AS m
-                                        LEFT JOIN UserProfile AS up ON SenderId = up.id
-                                        Left UserProfile AS up ON ReceiverId = up.id
+                                        LEFT JOIN UserProfile AS up ON m.SenderId = up.id
+                                       
                                         ";
                     var reader = cmd.ExecuteReader();
 
@@ -41,7 +38,7 @@ namespace StonkMarket.Repositories
                             Date = reader.GetDateTime(reader.GetOrdinal("Date")),
                             SenderId = reader.GetInt32(reader.GetOrdinal("SenderId")),
                             ReceiverId = reader.GetInt32(reader.GetOrdinal("ReceiverId")),
-                            CreatedDate = reader.GetDateTime(reader.GetOrdinal("Date")),
+                            CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                         });
                     }
 
@@ -51,7 +48,7 @@ namespace StonkMarket.Repositories
                 }
             }
         }
-        public Message GetMessageById(int id)
+        public List<Message> GetAllMessagesByUserId(int userProfileId)
         {
             using (var conn = Connection)
             {
@@ -61,15 +58,17 @@ namespace StonkMarket.Repositories
                     cmd.CommandText = @"SELECT m.id, m.Content, m.Date, m.SenderId, m.ReceiverId, m.CreatedDate 
                                         FROM Message AS m
                                         LEFT JOIN UserProfile AS up ON SenderId = up.id
-                                        Left UserProfile AS up ON ReceiverId = up.id                                 
-                                        WHERE Message.id = @id";
+                                     
+                                        WHERE m.SenderId = @UserProfileId";
 
-                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@UserProfileId", userProfileId);
                     var reader = cmd.ExecuteReader();
 
-                    if (reader.Read())
+                    var messages = new List<Message>();
+
+                    while (reader.Read())
                     {
-                        Message message = new Message
+                        messages.Add(new Message()
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
@@ -77,19 +76,21 @@ namespace StonkMarket.Repositories
                             SenderId = reader.GetInt32(reader.GetOrdinal("SenderId")),
                             ReceiverId = reader.GetInt32(reader.GetOrdinal("ReceiverId")),
                             CreatedDate = reader.GetDateTime(reader.GetOrdinal("Date")),
-                        };
 
+                            UserProfile = new UserProfile()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                            }
+                        });
 
-                        reader.Close();
-                        return message;
                     }
-                    else
-                    {
                         reader.Close();
-                        return null;
+                        return messages;
                     }
-
-                }
+                
+               
             }
         }
 
@@ -105,13 +106,14 @@ namespace StonkMarket.Repositories
                     cmd.CommandText = @"
                     INSERT INTO Message (Content, Date, SenderId, ReceiverId, CreatedDate)
                     OUTPUT INSERTED.ID
-                    VALUES (@content, @date, @senderID, @receiverId);
+                    VALUES (@content, @date, @senderID, @receiverId, @createDate);
                 ";
 
                     cmd.Parameters.AddWithValue("@content", message.Content);
                     cmd.Parameters.AddWithValue("@date", message.Date);
                     cmd.Parameters.AddWithValue("@senderId", message.SenderId);
                     cmd.Parameters.AddWithValue("@receiverId", message.ReceiverId);
+                    cmd.Parameters.AddWithValue("@createdDate", message.CreatedDate);
 
 
                     int id = (int)cmd.ExecuteScalar();

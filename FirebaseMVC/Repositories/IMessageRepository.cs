@@ -8,7 +8,7 @@ namespace StonkMarket.Repositories
         void AddMessage(Message message);
         void DeleteMessage(int messageId);
         List<Message> GetAllMessages();
-        Message GetMessageById(int id);
+        List<Message> GetAllMessagesByUserId(int userProfileId);
         void UpdateMessage(Message message);
     }
 }

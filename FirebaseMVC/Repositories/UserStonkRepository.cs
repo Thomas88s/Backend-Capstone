@@ -1,8 +1,5 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using StonkMarket.Models;
 
@@ -232,30 +229,7 @@ namespace StonkMarket.Repositories
             }
         }
 
-        //public void Add(UserStonk userStonk)
-        //{
-        //    using (var conn = Connection)
-        //    {
-        //        conn.Open();
-        //        using (var cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"
-        //                INSERT INTO UserStonk (StockId, UserId, NumberOfStonks, TopPerformer)
-        //                OUTPUT INSERTED.ID
-        //                VALUES (@stockId, @userId, @PercentageIncrease, @TopPerformer);
-        //                ";
-
-        //            cmd.Parameters.AddWithValue("@stonkId", userStonk.StonkId);
-        //            cmd.Parameters.AddWithValue("@userId", userStonk.UserId);
-        //            cmd.Parameters.AddWithValue("@numberOfStonks", userStonk.UserId);
-        //            cmd.Parameters.AddWithValue("@date", userStonk.TopPerformer);
-        //            ;
-
-        //            int id = (int)cmd.ExecuteScalar();
-        //            userStonk.Id = id;
-        //        }
-        //    }
-        //}
+       
 
         public void Update(UserStonk userStonk)
         {
