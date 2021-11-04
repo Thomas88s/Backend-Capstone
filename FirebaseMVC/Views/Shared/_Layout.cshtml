@@ -8,65 +8,76 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <header backgroundcolor="grey">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" >
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Stonk Market</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                  
+                        <img src="https://media.gettyimages.com/vectors/arrows-up-icon-vector-id1051814280?k=20&m=1051814280&s=612x612&w=0&h=oa9JqWmG162SrgfwuU8VXt5kyPc1msAEeg7QMxNyThw=" class="img-fluid" style="width: 75px; height: 75px;">
+                  
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"></a>
+                }
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                   <ul class="navbar-nav">
-                       @if (User.Identity.IsAuthenticated)
-                       {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                        </li>
-                       }
-                       else
-                       {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                        </li>
-                       }
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                        }
                     </ul>
-                   <ul class="navbar-nav flex-grow-1">
-                       <li class="nav-item">
-                           <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                       </li>
-                       <li class="nav-item">
-                           <a class="nav-link text-dark" asp-area="" asp-controller="userstonk" asp-action="index">Your Stonks</a>
-                       </li>
-                       <li class="nav-item">
-                           <a class="nav-link text-dark" asp-area="" asp-controller="stonk" asp-action="index">All Stonks</a>
-                       </li>
-                       <li class="nav-item">
-                           <a class="nav-link text-dark" asp-area="" asp-controller="userstonk" asp-action="TopIndex">Top Stonks</a>
-                       </li>
-                       <li class="nav-item">
-                           <a class="nav-link text-dark" asp-area="" asp-controller="message" asp-action="index">Messages</a>
-                       </li>
-                       <li class="nav-item">
-                           <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                       </li>
-                   </ul>
+
+
+
+                    <ul class="navbar-nav flex-grow-1">
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="userstonk" asp-action="index">Your Stonks</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="stonk" asp-action="index">All Stonks</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="userstonk" asp-action="TopIndex">Top Stonks</a>
+                        </li>
+                        @*<li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="message" asp-action="index">Messages</a>
+                </li>*@
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
                 </div>
-             </div>
+            </div>
         </nav>
     </header>
+          
     <div class="container">
-        <main role="main" class="pb-3">
+           <main role="main" class="pb-3" style='background:linear-gradient()'>
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - FirebaseMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - StonkMarket - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

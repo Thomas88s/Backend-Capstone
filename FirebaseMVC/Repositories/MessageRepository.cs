@@ -106,7 +106,7 @@ namespace StonkMarket.Repositories
                     cmd.CommandText = @"
                     INSERT INTO Message (Content, Date, SenderId, ReceiverId, CreatedDate)
                     OUTPUT INSERTED.ID
-                    VALUES (@content, @date, @senderID, @receiverId, @createDate);
+                    VALUES (@content, @date, 1, 1, @createDate);
                 ";
 
                     cmd.Parameters.AddWithValue("@content", message.Content);

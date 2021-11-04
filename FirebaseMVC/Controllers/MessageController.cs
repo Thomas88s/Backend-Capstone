@@ -42,18 +42,19 @@ namespace StonkMarket.Controllers
             return View(messages);
         }
 
-        // GET: MessageController/Create
+        // Post: MessageController/Create
         public ActionResult Create(Message message)
         {
             var userProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             List<UserProfile> userProfiles = _userProfileRepository.GetAllUserProfiles();
-            
+            UserProfile userProfile = _userProfileRepository.GetById(userProfileId);
             
             MessageViewModel vm = new MessageViewModel()
             {
+
                 Message = new Message(),
                 UserProfiles = userProfiles,
-             
+                
             };
 
             return View(vm);

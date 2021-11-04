@@ -1,17 +1,26 @@
 ﻿using System;
-
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace StonkMarket.Models
 {
     public class Stonk
     {
         public int Id { get; set; }
+
+        [DisplayName("Company")]
         public string Name { get; set; }
         public decimal Price { get; set; }
+        [DisplayName("Price")]
         public decimal FlutterPrice { get { return RandomizePrice(Price); } set { } }
+
+        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
         public DateTime Date { get; set; }
+        [DisplayName("1 Year Projection")]
         public decimal OneYear { get { return CalculateTotalWithCompoundInterestForOne(RandomizePrice(Price)); } set { } }
+        [DisplayName("5 Year Projection")]
         public decimal FiveYear { get { return CalculateTotalWithCompoundInterestForFive(RandomizePrice(Price)); }  set { } }
+        [DisplayName("10 Year Projection")]
         public decimal TenYear { get { return CalculateTotalWithCompoundInterestForTen(RandomizePrice(Price)); } set { } }
         public UserStonk UserStonk { get; set; }
         public UserProfile userProfile { get; set; }
@@ -62,21 +71,21 @@ namespace StonkMarket.Models
         decimal CalculateTotalWithCompoundInterestForOne(decimal RandomizePrice)
         {
            
-            var answer = RandomizePrice * (decimal)Math.Pow((double)(1 + .1 / 1), 1 * 1);
+            var answer = RandomizePrice * (decimal)Math.Pow((double)(1.1), 1 * 1);
 
             return answer;
         }
 
         decimal CalculateTotalWithCompoundInterestForFive(decimal RandomizePrice)
         {
-            var answer = RandomizePrice * (decimal)Math.Pow((double)(1 + .1 / 1), 1 *5);
+            var answer = RandomizePrice * (decimal)Math.Pow((double)(1.1), 1 * 5);
 
             return answer;
         }
 
         decimal CalculateTotalWithCompoundInterestForTen(decimal RandomizePrice)
         {
-            var answer = RandomizePrice * (decimal)Math.Pow((double)(1 + .1 / 1), 1 * 10);
+            var answer = RandomizePrice * (decimal)Math.Pow((double)(1.1), 1 * 10);
 
             return answer;
         }

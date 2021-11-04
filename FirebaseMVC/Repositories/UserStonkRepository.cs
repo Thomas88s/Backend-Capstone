@@ -78,6 +78,7 @@ namespace StonkMarket.Repositories
                                         LEFT JOIN Stonk AS s ON u.StonkId = s.Id
                                         LEFT JOIN UserProfile AS up ON u.UserId = up.id
                                         
+                                        
                                         WHERE u.UserId = @UserProfileId";
 
                     cmd.Parameters.AddWithValue("@UserProfileId", userProfileId);
@@ -189,7 +190,8 @@ namespace StonkMarket.Repositories
                                         FROM UserStonk AS u 
                                         LEFT JOIN Stonk AS s ON u.StonkId = s.Id
                                         LEFT JOIN UserProfile AS up ON u.UserId = up.id
-                                        Where u.TopPerformer = 'true'";
+                                        Where u.TopPerformer = 'true'
+                                        ORDER BY S.name";
                     var reader = cmd.ExecuteReader();
 
                     var stonks = new List<UserStonk>();
