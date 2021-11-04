@@ -11,6 +11,6 @@ namespace StonkMarket.Models.ViewModels
         public Message Message { get; set; }
         public List<UserProfile> UserProfiles { get; set; }
 
-        public UserProfile userProfile { get; set; }
+        public UserProfile UserProfile { get; set; }
     }
 }
